@@ -5,6 +5,8 @@ public class Jogo {
 	private String console;
 	private String valorestimado;
 	private String observaçoes;
+	private boolean zerado;
+	
 	
 	
 	public String getTitulodojogo() {
