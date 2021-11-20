@@ -1,13 +1,15 @@
 package br.senai.sp.jandira.repository;
 
+import br.senai.sp.jandira.model.Console;
 import br.senai.sp.jandira.model.Fabricante;
 
+
 public class FabricanteRepository {
-	
+	private Console console;
 	private Fabricante[] fabricante;
 	
 	public FabricanteRepository() {
-		fabricante = new Fabricante[10];
+		fabricante = new Fabricante[100];
 	}
 	public FabricanteRepository(int quantidadedefabricantes) {
 		fabricante = new Fabricante[quantidadedefabricantes];
@@ -21,5 +23,12 @@ public class FabricanteRepository {
 	}
 	public Fabricante[] listartodos() {
 		return fabricante;
+	}
+	public Console getconsole() {
+		return console;
+	}
+
+	public void setconsole(Console console) {
+		this.console = console;
 	}
 }

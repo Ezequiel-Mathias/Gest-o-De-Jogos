@@ -2,7 +2,7 @@ package br.senai.sp.jandira.model;
 
 public class Jogo {
 	private String titulodojogo;
-	private String console;
+	private Console console;
 	private String valorestimado;
 	private String observaçoes;
 	private boolean zerado;
@@ -15,10 +15,10 @@ public class Jogo {
 	public void setTitulodojogo(String titulodojogo) {
 		this.titulodojogo = titulodojogo;
 	}
-	public String getConsole() {
+	public Console getConsole() {
 		return console;
 	}
-	public void setConsole(String console) {
+	public void setConsole(Console console) {
 		this.console = console;
 	}
 	public String getValorestimado() {
