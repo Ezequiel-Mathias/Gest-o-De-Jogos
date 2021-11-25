@@ -40,7 +40,7 @@ public class Fabricante {
 		this.email = email;
 	}
 
-	private String Fabricantes [] = {" Sony ", " Tencent " , " Nintendo "};
+	private String Fabricantes [] = {" Sony ", " Tencent " , " Nintendo " , "EPIC Games"};
 
 	public String[] getFabricantes() {
 		return Fabricantes;

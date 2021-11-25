@@ -9,7 +9,7 @@ public class FabricanteRepository {
 	private Fabricante[] fabricante;
 	
 	public FabricanteRepository() {
-		fabricante = new Fabricante[100];
+		fabricante = new Fabricante[32];
 	}
 	public FabricanteRepository(int quantidadedefabricantes) {
 		fabricante = new Fabricante[quantidadedefabricantes];

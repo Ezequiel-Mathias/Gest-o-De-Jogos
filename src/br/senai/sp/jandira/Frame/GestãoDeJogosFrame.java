@@ -7,6 +7,8 @@ import java.awt.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import br.senai.sp.jandira.model.Jogo;
 
@@ -36,6 +38,8 @@ import br.senai.sp.jandira.model.Console;
 import br.senai.sp.jandira.model.Fabricante;
 
 import javax.swing.JTextArea;
+import javax.swing.JFormattedTextField;
+import br.senai.sp.jandira.model.QuantidadesZeradas;
 
 public class GestãoDeJogosFrame extends JFrame {
 
@@ -86,13 +90,15 @@ public class GestãoDeJogosFrame extends JFrame {
 		contentPane.add(btnSalvar);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(278, 89, 146, 161);
+		scrollPane.setBounds(340, 53, 202, 230);
 		contentPane.add(scrollPane);
 		
 		JList list = new JList();
 		scrollPane.setViewportView(list);
 		DefaultListModel<String> listamodel = new DefaultListModel<String>();
 		list.setModel(listamodel);
+		
+		
 		
 		JLabel lblFabricante = new JLabel("Fabricante : ");
 		lblFabricante.setBounds(10, 53, 110, 14);
@@ -141,10 +147,19 @@ public class GestãoDeJogosFrame extends JFrame {
 		JComboBox comboBoxFabricante = new JComboBox();
 		comboBoxFabricante.setBounds(119, 49, 161, 22);
 		Fabricante fabricante = new Fabricante();
-		
-		
-		DefaultListModel<String> combofabricante = new DefaultListModel<String>();
+		DefaultComboBoxModel<String>combofabricante = new DefaultComboBoxModel<String>();
+		comboBoxFabricante.setModel(combofabricante);
 		contentPane.add(comboBoxFabricante);
+		Fabricante vetorFabricante = new Fabricante();
+		
+		String vetor[] = vetorFabricante.getFabricantes();
+		
+		for (int contador = 0; contador < vetor.length; contador++) {
+			combofabricante.addElement(vetor[contador]);
+		}
+		
+		
+		
 		
 		FabricanteRepository fabricanteRepository = new FabricanteRepository(10);
 		
@@ -158,13 +173,24 @@ public class GestãoDeJogosFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Jogo jogo = new Jogo();
 				jogo.setTitulodojogo(txtcaixinhadotitulodojogo.getText());
-				listamodel.addElement(jogo.getTitulodojogo());	
+					
 				
 				// definir o console 
 				jogo.setConsole((determinarConsole(comboBoxConsole.getSelectedIndex())));
-				
-				fabricanteRepository.gravar(jogo, posicao);
+				jogos.gravar(jogo, posicao);
 				posicao++;
+				listamodel.addElement(jogo.getTitulodojogo());
+				
+			}
+		});
+		
+		list.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				Jogo jogoo = jogos.listarjogos(list.getSelectedIndex());
+				txtcaixinhadotitulodojogo.setText(jogoo.getTitulodojogo());
+				
 			}
 		});
 		
@@ -191,6 +217,15 @@ public class GestãoDeJogosFrame extends JFrame {
 		btndireito.setBounds(359, 299, 77, 34);
 		contentPane.add(btndireito);
 		
+		JComboBox comboBoxquantidaDeVezesZeradas = new JComboBox();
+		comboBoxquantidaDeVezesZeradas.setModel(new DefaultComboBoxModel(QuantidadesZeradas.values()));
+		comboBoxquantidaDeVezesZeradas.setBounds(271, 87, 68, 22);
+		contentPane.add(comboBoxquantidaDeVezesZeradas);
+		
+		JLabel lblQuantidadesZeradas = new JLabel("Quantidades Zeradas");
+		lblQuantidadesZeradas.setBounds(130, 91, 130, 14);
+		contentPane.add(lblQuantidadesZeradas);
+		
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			listModel.removeElement(txtcaixinhadotitulodojogo);
@@ -206,6 +241,7 @@ public class GestãoDeJogosFrame extends JFrame {
 			}
 		});
 	}
+
 		private Console determinarConsole(int consoleSelecionado) {
 			 if (consoleSelecionado == 0) {
 			    	return Console.NINTENDOSWITCH;
