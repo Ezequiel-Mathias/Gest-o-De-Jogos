@@ -21,6 +21,8 @@ import javax.swing.JTable;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.util.Vector;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -95,7 +97,8 @@ public class GestãoDeJogosFrame extends JFrame {
 		
 		JList list = new JList();
 		scrollPane.setViewportView(list);
-		DefaultListModel<String> listamodel = new DefaultListModel<String>();
+		DefaultListModel<String> listamodel = 
+				new DefaultListModel<String>();
 		list.setModel(listamodel);
 		
 		
@@ -109,16 +112,21 @@ public class GestãoDeJogosFrame extends JFrame {
 		contentPane.add(lblZerado);
 		
 		JComboBox comboBoxzerado = new JComboBox();
-		DefaultComboBoxModel<String> modelConsole = new DefaultComboBoxModel<String>();
+		DefaultComboBoxModel<String> modelZerado =
+				new DefaultComboBoxModel<String>();
 		comboBoxzerado.setModel(new DefaultComboBoxModel(Zerado.values()));
 		comboBoxzerado.setBounds(54, 87, 66, 22);
 		contentPane.add(comboBoxzerado);
-		for (Console p : Console.values()) {
-			modelConsole.addElement(p.getDescricao());
+		for (Console combozerado : Console.values()) {
+			modelZerado.addElement(combozerado.getDescricao());
 		}
 		JComboBox comboBoxConsole = new JComboBox();
+		DefaultComboBoxModel<String> Consolee = 
+				new DefaultComboBoxModel<String>();
 		comboBoxConsole.setModel(new DefaultComboBoxModel(Console.values()));
-		
+		for (Console comboConsole : Console.values()) {
+			Consolee.addElement(comboConsole.getDescricao());
+		}
 		
 		comboBoxConsole.setBounds(85, 131, 146, 22);
 		contentPane.add(comboBoxConsole);
@@ -131,6 +139,10 @@ public class GestãoDeJogosFrame extends JFrame {
 		lblValorestimado.setBounds(10, 175, 89, 14);
 		contentPane.add(lblValorestimado);
 		
+		JTextPane txtobservaçoes = new JTextPane();
+		txtobservaçoes.setBounds(95, 216, 121, 117);
+		contentPane.add(txtobservaçoes);
+		
 		txtcaixavalorestimado = new JTextField();
 		txtcaixavalorestimado.setBounds(118, 172, 86, 20);
 		contentPane.add(txtcaixavalorestimado);
@@ -140,17 +152,24 @@ public class GestãoDeJogosFrame extends JFrame {
 		lblObservaçoes.setBounds(10, 216, 89, 14);
 		contentPane.add(lblObservaçoes);
 		
-		JTextArea txtobservaçoes = new JTextArea();
-		txtobservaçoes.setBounds(85, 220, 130, 128);
-		contentPane.add(txtobservaçoes);
-		
 		JComboBox comboBoxFabricante = new JComboBox();
 		comboBoxFabricante.setBounds(119, 49, 161, 22);
 		Fabricante fabricante = new Fabricante();
-		DefaultComboBoxModel<String>combofabricante = new DefaultComboBoxModel<String>();
+		DefaultComboBoxModel<String>combofabricante = 
+				new DefaultComboBoxModel<String>();
 		comboBoxFabricante.setModel(combofabricante);
 		contentPane.add(comboBoxFabricante);
 		Fabricante vetorFabricante = new Fabricante();
+		
+		JComboBox comboBoxquantidaDeVezesZeradas = new JComboBox();
+		DefaultComboBoxModel<String>comboVezesZeradas = 
+				new DefaultComboBoxModel<String>();
+		comboBoxquantidaDeVezesZeradas.setModel(new DefaultComboBoxModel(QuantidadesZeradas.values()));
+		comboBoxquantidaDeVezesZeradas.setBounds(258, 87, 80, 22);
+		contentPane.add(comboBoxquantidaDeVezesZeradas);
+		for (QuantidadesZeradas vezesZeradas : QuantidadesZeradas.values()) {
+			Consolee.addElement(vezesZeradas.getDescricao());
+		}
 		
 		String vetor[] = vetorFabricante.getFabricantes();
 		
@@ -158,14 +177,11 @@ public class GestãoDeJogosFrame extends JFrame {
 			combofabricante.addElement(vetor[contador]);
 		}
 		
-		
-		
-		
 		FabricanteRepository fabricanteRepository = new FabricanteRepository(10);
 		
 		DefaultListModel listModel = new DefaultListModel();
 		
-		JogoRepository jogos = new JogoRepository(10);
+		JogoRepository jogos = new JogoRepository();
 		
 		btnSalvar.addActionListener(new ActionListener() {
 			
@@ -173,10 +189,13 @@ public class GestãoDeJogosFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Jogo jogo = new Jogo();
 				jogo.setTitulodojogo(txtcaixinhadotitulodojogo.getText());
-					
-				
-				// definir o console 
-				jogo.setConsole((determinarConsole(comboBoxConsole.getSelectedIndex())));
+				jogo.setObservaçoes(txtobservaçoes.getText());	
+				jogo.setValorestimado(txtcaixavalorestimado.getText());	
+				// Parte do salvamento dos consoles !! 
+				jogo.setConsole(determinarConsole(comboBoxConsole.getSelectedIndex()));
+				jogo.setZerado(determinarZerado(comboBoxzerado.getSelectedIndex()));
+				jogo.setquantidadeDojogoszerados(DeterminarQuantidadesZeradas
+				(comboBoxquantidaDeVezesZeradas.getSelectedIndex()));
 				jogos.gravar(jogo, posicao);
 				posicao++;
 				listamodel.addElement(jogo.getTitulodojogo());
@@ -188,18 +207,27 @@ public class GestãoDeJogosFrame extends JFrame {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				Jogo jogoo = jogos.listarjogos(list.getSelectedIndex());
-				txtcaixinhadotitulodojogo.setText(jogoo.getTitulodojogo());
+				Jogo jogo = jogos.listarjogos(list.getSelectedIndex());
+				txtcaixinhadotitulodojogo.setText(jogo.getTitulodojogo());
+				txtobservaçoes.setText(jogo.getObservaçoes());
+				txtcaixavalorestimado.setText(jogo.getValorestimado());
 				
+				
+				//parte da seleção dos comboboxs
+				comboBoxConsole.setSelectedIndex(jogo.getConsole().ordinal());
+				comboBoxzerado.setSelectedIndex(jogo.getZerado().ordinal());
+				comboBoxquantidaDeVezesZeradas.setSelectedIndex
+				(jogo.getquantidadeDojogoszerados().ordinal());
 			}
 		});
 		
+	
 		JButton btnLimpar = new JButton("Limpar");
 		btnLimpar.setBounds(153, 359, 89, 23);
 		contentPane.add(btnLimpar);
 		
 		JButton btnesquerdo = new JButton("<");
-		btnesquerdo.setBounds(271, 299, 77, 34);
+		btnesquerdo.setBounds(367, 299, 77, 34);
 		contentPane.add(btnesquerdo);
 		btnesquerdo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -214,34 +242,46 @@ public class GestãoDeJogosFrame extends JFrame {
 		});
 		
 		
-		btndireito.setBounds(359, 299, 77, 34);
+		btndireito.setBounds(454, 299, 77, 34);
 		contentPane.add(btndireito);
 		
-		JComboBox comboBoxquantidaDeVezesZeradas = new JComboBox();
-		comboBoxquantidaDeVezesZeradas.setModel(new DefaultComboBoxModel(QuantidadesZeradas.values()));
-		comboBoxquantidaDeVezesZeradas.setBounds(271, 87, 68, 22);
-		contentPane.add(comboBoxquantidaDeVezesZeradas);
-		
 		JLabel lblQuantidadesZeradas = new JLabel("Quantidades Zeradas");
-		lblQuantidadesZeradas.setBounds(130, 91, 130, 14);
+		lblQuantidadesZeradas.setBounds(129, 91, 132, 14);
 		contentPane.add(lblQuantidadesZeradas);
+		
+		JButton btnLimparListar = new JButton("Limpar Lista");
+		btnLimparListar.setBounds(385, 353, 121, 34);
+		contentPane.add(btnLimparListar);
+		
+	
+		btnLimparListar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				listamodel.removeElement(MouseEvent.MOUSE_CLICKED);
+			}
+		});
+	
 		
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			
 			listModel.removeElement(txtcaixinhadotitulodojogo);
-			txtcaixinhadotitulodojogo.setText("");
+			txtcaixinhadotitulodojogo.setText(null);
 			txtcaixinhadotitulodojogo.requestFocus();
 			listModel.removeElement(txtobservaçoes);
-			txtobservaçoes.setText("");
+			txtobservaçoes.setText(null);
 			txtobservaçoes.requestFocus();
 			listModel.removeElement(txtcaixavalorestimado);
-			txtcaixavalorestimado.setText("");
+			txtcaixavalorestimado.setText(null);
 			txtcaixavalorestimado.requestFocus();
-			listamodel.removeAllElements();	
+			listModel.ensureCapacity(100);
+			
+			
+			
 			}
 		});
 	}
-
+		//para o combobox não bugar e trocar de lugar tem que estar na mesma
+	//ordem do enum se não vai trocar as palavras assim que você salvar.
 		private Console determinarConsole(int consoleSelecionado) {
 			 if (consoleSelecionado == 0) {
 			    	return Console.NINTENDOSWITCH;
@@ -249,6 +289,24 @@ public class GestãoDeJogosFrame extends JFrame {
 			    	return  Console.PLAYSTATION4;
 			    } else {
 			    	return Console.XBOX;
+			    }
+	}
+		private Zerado determinarZerado(int consoleZeradoSelecionado) {
+			 if (consoleZeradoSelecionado == 0) {
+			    	return Zerado.SIM;
+			    }  else {
+			    	return Zerado.NÃO;
+			    }
+	}
+		private  QuantidadesZeradas  DeterminarQuantidadesZeradas(int QuantidadedevezesZeradas) {
+			 if (QuantidadedevezesZeradas == 0) {
+			    	return QuantidadesZeradas.UMA;
+			    } else if (QuantidadedevezesZeradas == 1) { 
+			    	return QuantidadesZeradas.DUAS;
+			    }else if (QuantidadedevezesZeradas == 2) {
+			    	return QuantidadesZeradas.TRES;
+			    }else {
+			    	return QuantidadesZeradas.QUATRO;
 			    }
 	}
 }

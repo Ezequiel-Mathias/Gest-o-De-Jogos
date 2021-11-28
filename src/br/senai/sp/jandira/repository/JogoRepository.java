@@ -18,7 +18,5 @@ public class JogoRepository {
 	public Jogo listarjogos(int posiçao) {
 		return jogos[posiçao];
 	}
-	public Jogo[] listarJogos() {
-		return jogos;
-	}
+	
 }

@@ -2,9 +2,9 @@ package br.senai.sp.jandira.model;
 
 public enum Console {
 	
+	NINTENDOSWITCH("Nintendo Switch"),
 	PLAYSTATION4("Playstation 4"),
-	XBOX("X box"),
-	NINTENDOSWITCH("Nintendo Switch");
+	XBOX("X box");
 	
 	private String console;
 	

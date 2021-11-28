@@ -2,21 +2,20 @@ package br.senai.sp.jandira.model;
 
 public enum QuantidadesZeradas {
 	
-	Uma("Uma"),
-	Duas("Duas"),
-	Três("Três"),
-	Quatro("Quatro")
-;
+	UMA("Uma"),
+	DUAS("Duas"),
+	TRES("Três"),
+	QUATRO("Quatro");
 	
 	
-	private String zeradoo;
+	private String zerado;
 	
 	private QuantidadesZeradas(String zerado) {
-		this.zeradoo = zerado;
+		this.zerado = zerado;
 	}
 	
 	public String getDescricao() {
-		return zeradoo;
+		return zerado;
 	}
 
 
