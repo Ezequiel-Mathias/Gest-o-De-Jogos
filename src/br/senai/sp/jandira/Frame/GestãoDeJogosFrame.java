@@ -16,6 +16,7 @@ import br.senai.sp.jandira.model.Jogo;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.JEditorPane;
 import javax.swing.JTable;
 import java.awt.TextField;
@@ -26,6 +27,7 @@ import java.util.Vector;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JScrollBar;
@@ -78,6 +80,7 @@ public class GestãoDeJogosFrame extends JFrame {
 		txtcaixinhadotitulodojogo.setBounds(130, 25, 150, 20);
 		contentPane.add(txtcaixinhadotitulodojogo);
 		txtcaixinhadotitulodojogo.setColumns(10);
+		String p = txtcaixinhadotitulodojogo.getText();
 		
 		
 		JLabel lblTituloDoJogo = new JLabel("Titulo Do Jogo");
@@ -199,7 +202,6 @@ public class GestãoDeJogosFrame extends JFrame {
 				jogos.gravar(jogo, posicao);
 				posicao++;
 				listamodel.addElement(jogo.getTitulodojogo());
-				
 			}
 		});
 		
@@ -229,15 +231,29 @@ public class GestãoDeJogosFrame extends JFrame {
 		JButton btnesquerdo = new JButton("<");
 		btnesquerdo.setBounds(367, 299, 77, 34);
 		contentPane.add(btnesquerdo);
+		
 		btnesquerdo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					
+				if (list.isSelectionEmpty()) {
+					JOptionPane.showMessageDialog(null, "Faça uma seleção no Jlist primeiro", "Selecione Algo!", JOptionPane.WARNING_MESSAGE);
+				} else {
+					list.setSelectedIndex(list.getSelectedIndex()-1);
+				}
 			}
+				
+			
 		});
 		
 		JButton btndireito = new JButton(">");
 		btndireito.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				if (list.isSelectionEmpty()) {
+					JOptionPane.showMessageDialog(null, "Faça uma seleção no Jlist primeiro", "Selecione Algo!", JOptionPane.WARNING_MESSAGE);
+				} else {
+					list.setSelectedIndex(list.getSelectedIndex()+1);
+				}
+			
 			}
 		});
 		
@@ -253,10 +269,11 @@ public class GestãoDeJogosFrame extends JFrame {
 		btnLimparListar.setBounds(385, 353, 121, 34);
 		contentPane.add(btnLimparListar);
 		
-	
+		 
 		btnLimparListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				listamodel.removeElement(MouseEvent.MOUSE_CLICKED);
+				listamodel.removeAllElements();
+				
 			}
 		});
 	
