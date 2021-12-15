@@ -276,7 +276,8 @@ public class GestãoDeJogosFrame extends JFrame {
 		 
 		btnLimparListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				listamodel.removeAllElements();
+				list.setSelectedIndex(0);
+				listamodel.removeRange(0 , list.getSelectedIndex());
 				
 			}
 		});
