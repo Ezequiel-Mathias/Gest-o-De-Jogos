@@ -1,53 +1,26 @@
 package br.senai.sp.jandira.model;
 
+import java.time.LocalDate;
+
 public class Fabricante {
 	
 	private String nome;
-	private String local;
-	private String numero;
-	private String email;
+	private LocalDate dataFundação;
 	
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 	
 	public String getNome() {
 		return nome;
 	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
+	
+	public void setDataFundação(LocalDate dataFundação) {
+		this.dataFundação = dataFundação;
 	}
-
-	public String getLocal() {
-		return local;
-	}
-
-	public void setLocal(String local) {
-		this.local = local;
-	}
-
-	public String getNumero() {
-		return numero;
-	}
-
-	public void setNumero(String numero) {
-		this.numero = numero;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	private String Fabricantes [] = {" Sony ", " Tencent " , " Nintendo " , "EPIC Games"};
-
-	public String[] getFabricantes() {
-		return Fabricantes;
-	}
-
-	public void setFabricantes(String[] fabricantes) {
-		Fabricantes = fabricantes;
+	
+	public LocalDate getDataFundação() {
+		return dataFundação;
 	}
 	
 	

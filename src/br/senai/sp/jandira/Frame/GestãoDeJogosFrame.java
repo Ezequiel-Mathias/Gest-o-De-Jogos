@@ -155,18 +155,20 @@ public class GestãoDeJogosFrame extends JFrame {
 		lblObservaçoes.setBounds(10, 216, 89, 14);
 		contentPane.add(lblObservaçoes);
 		
-		JComboBox comboBoxFabricante = new JComboBox();
+		JComboBox<String> comboBoxFabricante = new JComboBox <String>();
 		comboBoxFabricante.setBounds(119, 49, 161, 22);
-		Fabricante fabricante = new Fabricante();
-		DefaultComboBoxModel<String>combofabricante = 
-				new DefaultComboBoxModel<String>();
+		
+		FabricanteRepository fabricantes = new FabricanteRepository();
+		DefaultComboBoxModel<String>combofabricante = new DefaultComboBoxModel<String>();
+		
 		comboBoxFabricante.setModel(combofabricante);
 		contentPane.add(comboBoxFabricante);
 		Fabricante vetorFabricante = new Fabricante();
 		
 		JComboBox comboBoxquantidaDeVezesZeradas = new JComboBox();
-		DefaultComboBoxModel<String>comboVezesZeradas = 
-				new DefaultComboBoxModel<String>();
+		
+		DefaultComboBoxModel<String>comboVezesZeradas = new DefaultComboBoxModel<String>();
+		
 		comboBoxquantidaDeVezesZeradas.setModel(new DefaultComboBoxModel(QuantidadesZeradas.values()));
 		comboBoxquantidaDeVezesZeradas.setBounds(258, 87, 80, 22);
 		contentPane.add(comboBoxquantidaDeVezesZeradas);
@@ -174,10 +176,10 @@ public class GestãoDeJogosFrame extends JFrame {
 			Consolee.addElement(vezesZeradas.getDescricao());
 		}
 		
-		String vetor[] = vetorFabricante.getFabricantes();
 		
-		for (int contador = 0; contador < vetor.length; contador++) {
-			combofabricante.addElement(vetor[contador]);
+		
+		for (Fabricante fabricante : fabricantes.getFabricantes()) {
+			combofabricante.addElement(fabricante.getNome());
 		}
 		
 		FabricanteRepository fabricanteRepository = new FabricanteRepository(10);
@@ -195,6 +197,7 @@ public class GestãoDeJogosFrame extends JFrame {
 				jogo.setObservaçoes(txtobservaçoes.getText());	
 				jogo.setValorestimado(txtcaixavalorestimado.getText());	
 				// Parte do salvamento dos consoles !! 
+				jogo.setFabricante(fabricantes.listarFabricantes(comboBoxFabricante.getSelectedIndex()));
 				jogo.setConsole(determinarConsole(comboBoxConsole.getSelectedIndex()));
 				jogo.setZerado(determinarZerado(comboBoxzerado.getSelectedIndex()));
 				jogo.setquantidadeDojogoszerados(DeterminarQuantidadesZeradas
@@ -216,6 +219,7 @@ public class GestãoDeJogosFrame extends JFrame {
 				
 				
 				//parte da seleção dos comboboxs
+				comboBoxFabricante.setSelectedIndex(fabricantes.getIndex(jogo.getFabricante()));
 				comboBoxConsole.setSelectedIndex(jogo.getConsole().ordinal());
 				comboBoxzerado.setSelectedIndex(jogo.getZerado().ordinal());
 				comboBoxquantidaDeVezesZeradas.setSelectedIndex

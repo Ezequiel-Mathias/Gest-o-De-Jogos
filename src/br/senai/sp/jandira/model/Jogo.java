@@ -2,6 +2,7 @@ package br.senai.sp.jandira.model;
 
 public class Jogo {
 	private String titulodojogo;
+	private Fabricante fabricante;
 	private Console console;
 	private Zerado zerado;
 	private QuantidadesZeradas quantidadaDojogoszerados;
@@ -32,6 +33,12 @@ public class Jogo {
 	}
 	public void setConsole(Console console) {
 		this.console = console;
+	}
+	public Fabricante getFabricante() {
+		return fabricante;
+	}
+	public void setFabricante(Fabricante fabricante) {
+		this.fabricante = fabricante;
 	}
 	public String getValorestimado() {
 		return valorestimado;
